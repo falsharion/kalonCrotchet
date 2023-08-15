@@ -10,7 +10,7 @@ const page = () => {
     <main className="mx-auto container p-5 lg:p-10">
       <h3 className="text-3xl text-primary">Ask a Question </h3>
       <form className="space-y-10">
-        <section className="pt-10">
+        <section className="pt-5">
           <h4 className="font-bold">YOUR INFORMATION </h4>
           <div className="bg-form py-10 px-5 space-y-5 text-formText">
             <label className="flex flex-col font-medium">
