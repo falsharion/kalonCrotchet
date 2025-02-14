@@ -2,34 +2,25 @@
 import Hero from "./component/Hero"
 import ClothesProductSlider from "./component/ ClothesProductSlider"
 import Link from "next/link"
+import {serviceFeatures} from "./constants/index"
 
 const HomePage = () => {
 
   return (
     <section>
       <Hero />
-      <div className="py-10">
-        <div className="lg:w-[781px] mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 mx-5 my-10 gap-x-2 gap-y-7 ">
-            <div className="flex flex-col items-center justify-center">
-              <img src="/carticons.png" alt="Free Shipping" className="w-18 h-18" />
-              <p className="text-center">Free Shipping</p>
+      <div className="pb-5">
+      <div className="lg:w-[781px] mx-auto">
+        <div className="grid grid-cols-4 mx-5 my-10 gap-x-2 gap-y-7">
+          {serviceFeatures.map((feature, index) => (
+            <div key={index} className="flex flex-col items-center justify-center">
+              <img src={feature.img} alt={feature.text} className="w-12 h-12 md:w-18 md:h-18 mb-3" />
+              <p className="text-center text-xs md:text-base">{feature.text}</p>
             </div>
-            <div className="flex flex-col items-center justify-center">
-              <img src="/shopicon.png" alt="Buy Online" className="w-18 h-18" />
-              <p className="text-center">Buy Online</p>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <img src="/shopicon.png" alt="Buy Online" className="w-18 h-18" />
-              <p className="text-center">Buy Online</p>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <img src="/shopicon.png" alt="Buy Online" className="w-18 h-18" />
-              <p className="text-center">Buy Online</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
+    </div>
 
       <div className="flex flex-col justify-center py-10 gap-16 items-center text-center md:flex-row">
         <div className="text-center">
