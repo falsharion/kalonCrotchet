@@ -1,5 +1,5 @@
 import React from 'react'
-import FormPageTitile from "../component/Headers"
+import Navbar from '../component/Navbar'
 import FormInput from "./FormInput"
 
 export const metadata = {
@@ -8,10 +8,10 @@ export const metadata = {
 
 const page = () => {
     return (
-        <div className='mx-8 md:m-20'>
-           <FormPageTitile title="Contact Us" />
+        <>
+            <Navbar />
            <FormInput  />
-        </div>
+        </>
     )
 }
 

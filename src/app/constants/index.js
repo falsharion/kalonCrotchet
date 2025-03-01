@@ -1,21 +1,39 @@
 
 export const navigationLinks = [
     {
+      key:1,
       name: "About Us",
-      path: "/about"
+      id: "about"
     },
     {
+      key:2,
       name: "Contact",
       path: "/contact"
     },
     {
+      key:3,
       name: "Product",
       path: "/product"
-    },
+    },  
     {
-      name: "Sales",
-      path: "/sales"
+      key:4,
+      name: "Custom Order",
+      path: "/customForm"
     }
+  ];
+  export const  items = [
+    'Top',
+    'Warmer',
+    'Cap',
+    'Gloves',
+    'Socks',
+    'Cushion',
+    'Case',
+    'Sweater',
+    'Vest',
+    'Hoodie',
+    'Bags',
+    'Case',
   ];
   
   export const mobileNavLinks = [
@@ -25,8 +43,8 @@ export const navigationLinks = [
       icon: "HomeIcon"
     },
     {
-      name: "Favorites",
-      path: "/favorites",
+      name: "Product",
+      path: "/product",
       icon: "HeartIcon"
     },
     {
@@ -42,8 +60,8 @@ export const navigationLinks = [
   ];
 
   export const serviceFeatures = [
-    { img: "/carticons.png", text: "Free Shipping" },
-    { img: "/shopicon.png", text: "Buy Online" },
-    { img: "/shopicon.png", text: "Buy Online" },
-    { img: "/shopicon.png", text: "Buy Online" },
+    { icon: "GGiThreeLeaves" , text: "Eco Friendly" },
+    { icon: "IoPin", text: "Handmade" },
+    { icon: "SlBadge", text: "Quality" },
+    { icon: "GiStarSwirl", text: "Unique" },
   ];
