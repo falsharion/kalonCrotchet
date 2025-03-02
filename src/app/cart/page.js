@@ -26,7 +26,7 @@ const CartPage = () => {
             {cartItems.map((item, index) => (
               <div
                 key={index}
-                className="flex items-center space-x-4 border p-4 rounded"
+                className="flex items-center space-x-4 border border-orange-950/20 px-2 rounded"
               >
                 {/* Product Image */}
                 <div className="w-24 h-24 relative">

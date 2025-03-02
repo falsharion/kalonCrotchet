@@ -1,5 +1,5 @@
 "use client";
-import React, { use } from 'react';
+import React from 'react';
 import { useProducts } from '../hooks/useProducts';
 import { ProductGrid } from '../component/ProductGrid';
 import { Filters } from '../component/Filters';
@@ -13,10 +13,17 @@ import { useSearchParams } from 'next/navigation';
 export default function ProductPage() {
   const searchParams = useSearchParams();
   const [initialData, setInitialData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    setInitialData(clothingDB.products);
+    const loadData = () => {
+      setInitialData(clothingDB.products);
+      setIsLoading(false);
+    };
+    
+    const timer = setTimeout(loadData, 100);
+    return () => clearTimeout(timer);
   }, []);
 
   const {
@@ -32,7 +39,8 @@ export default function ProductPage() {
     hasMoreProducts,
     isMobileFiltersOpen,
     toggleMobileFilters,
-    handlePriceFilter
+    handlePriceFilter,
+    totalFilteredProducts
   } = useProducts(initialData);
 
   // Wrap the search handler with useTransition
@@ -51,16 +59,21 @@ export default function ProductPage() {
     }
   }, [toggleFilterItem]);
 
+  // Determine if there are actually more products to show
+  const shouldShowMoreButton = hasMoreProducts && displayedProducts.length < totalFilteredProducts;
+
   return (
     <div className="max-w-7xl md:mt-14 mx-auto px-4 py-8 relative">
       <Navbar />
 
       {/* Loading Overlay */}
-      {isPending && (
+      {(isPending || isLoading) && (
         <div className="fixed inset-0 bg-white/70 backdrop-blur-sm z-50 flex items-center justify-center">
           <div className="flex flex-col items-center">
             <Loader2 className="w-12 h-12 animate-spin text-orange-700" />
-            <p className="mt-2 text-gray-700 font-medium">Searching products...</p>
+            <p className="mt-2 text-gray-700 font-medium">
+              {isPending ? "Searching products..." : "Loading products..."}
+            </p>
           </div>
         </div>
       )}
@@ -68,7 +81,7 @@ export default function ProductPage() {
       <div className="md:mt-14 md:hidden mt-10 mb-4">
         <button
           onClick={toggleMobileFilters}
-          className="w-full py-2 px-4 border rounded-lg flex items-center justify-center gap-2"
+          className="w-full py-2 px-4 bg-orange-950 hover:bg-orange-800 text-white rounded-lg flex items-center justify-center gap-2"
         >
           <Menu className="w-5 h-5" />
           Select preferences
@@ -85,10 +98,10 @@ export default function ProductPage() {
         {/* Mobile Filters */}
         {isMobileFiltersOpen && (
           <div className="md:hidden fixed top-0 left-0 w-1/2 h-full z-40 bg-white shadow-lg">
-            <div className="p-4 overflow-hidden">
+            <div className="p-4 pt-7 overflow-hidden">
               <button
                 onClick={toggleMobileFilters}
-                className="mb-4 text-gray-500"
+                className="mb-4  text-gray-500"
               >
                 ✕ Close
               </button>
@@ -119,10 +132,10 @@ export default function ProductPage() {
         <div className="flex-1">
           <ProductGrid products={displayedProducts} />
           
-          {hasMoreProducts && (
+          {shouldShowMoreButton && (
             <button
               onClick={() => setShowMore(true)}
-              className="mt-8 w-full py-3 px-4 border rounded-lg text-center font-medium hover:bg-gray-50"
+              className="mt-8 w-full py-3 px-4 border bg-orange-950 text-white rounded-lg text-center font-medium hover:bg-orange-800"
             >
               View More
             </button>

@@ -1,10 +1,9 @@
-
 'use client'
-
 import { useState, useEffect } from 'react';
 
 export const useProducts = (initialData) => {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [filters, setFilters] = useState({
     categories: [],
@@ -22,8 +21,8 @@ export const useProducts = (initialData) => {
     price: false,
   });
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  
 
-  // Initialize products and handle initial filter
   useEffect(() => {
     const initialFilter = localStorage.getItem('initialFilter');
     setProducts(initialData);
@@ -36,26 +35,27 @@ export const useProducts = (initialData) => {
       localStorage.removeItem('initialFilter');
     }
   }, [initialData]);
-
+  
   const toggleMobileFilters = () => {
     setIsMobileFiltersOpen(!isMobileFiltersOpen);
   };
-
+  
   const toggleFilter = (filterName) => {
     setIsFilterOpen(prev => ({
       ...prev,
       [filterName]: !prev[filterName]
     }));
   };
-
+  
   const handlePriceFilter = (value) => {
     setFilters(prev => ({ ...prev, priceRange: value }));
   };
-
+  
   const handleSearch = (query) => {
     setFilters(prev => ({ ...prev, searchQuery: query }));
+    setShowMore(false); 
   };
-
+  
   const toggleFilterItem = (type, value) => {
     setFilters(prev => ({
       ...prev,
@@ -65,31 +65,30 @@ export const useProducts = (initialData) => {
     }));
   };
 
-  // Separate effect for filtering
   useEffect(() => {
     if (!products.length) return;
-
+    
     let filtered = [...products];
-
+    
     if (filters.searchQuery) {
       filtered = filtered.filter(product =>
         product.name.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
         product.category.toLowerCase().includes(filters.searchQuery.toLowerCase())
       );
     }
-
+    
     if (filters.categories.length > 0) {
       filtered = filtered.filter(product =>
         filters.categories.includes(product.category)
       );
     }
-
+    
     if (filters.sizes.length > 0) {
       filtered = filtered.filter(product =>
         product.sizes.some(size => filters.sizes.includes(size))
       );
     }
-
+    
     if (filters.colors.length > 0) {
       filtered = filtered.filter(product => {
         const productColors = Array.isArray(product.color)
@@ -100,16 +99,21 @@ export const useProducts = (initialData) => {
         );
       });
     }
-
+    
     if (filters.priceRange) {
       filtered = filtered.sort((a, b) => {
         return filters.priceRange === 'low' ? a.price - b.price : b.price - a.price;
       });
     }
+    
+    setFilteredProducts(filtered);
+  }, [filters, products]);
+  
 
-    setDisplayedProducts(showMore ? filtered : filtered.slice(0, 10));
-  }, [filters, showMore, products.length]); // Using products.length instead of products
-
+  useEffect(() => {
+    setDisplayedProducts(showMore ? filteredProducts : filteredProducts.slice(0, 10));
+  }, [filteredProducts, showMore]);
+  
   const resetFilters = () => {
     setFilters({
       categories: [],
@@ -120,9 +124,14 @@ export const useProducts = (initialData) => {
     });
     setShowMore(false);
   };
-
+  
+  const totalFilteredProducts = filteredProducts.length;
+  const hasMoreProducts = filteredProducts.length > displayedProducts.length;
+  
   return {
     displayedProducts,
+    filteredProducts,
+    totalFilteredProducts,
     filters,
     isFilterOpen,
     showMore,
@@ -134,6 +143,6 @@ export const useProducts = (initialData) => {
     isMobileFiltersOpen,
     toggleMobileFilters,
     handlePriceFilter,
-    hasMoreProducts: products.length > displayedProducts.length
+    hasMoreProducts
   };
 };

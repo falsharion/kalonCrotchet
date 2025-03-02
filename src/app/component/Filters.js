@@ -1,5 +1,5 @@
 
-import { X, ChevronDown, ChevronUp } from 'lucide-react';
+import { RotateCcw, ChevronDown, ChevronUp } from 'lucide-react';
 export const Filters = ({
     filters,
     isFilterOpen,
@@ -10,16 +10,6 @@ export const Filters = ({
 }) => {
     return (
         <div className="w-full md:w-64 flex-shrink-0">
-            {(filters.categories.length > 0 || filters.sizes.length > 0 || filters.colors.length > 0) && (
-                <button
-                    onClick={resetFilters}
-                    className="mb-4 flex items-center text-sm text-gray-600 hover:text-gray-900"
-                >
-                    <X className="w-4 h-4 mr-1" />
-                    Reset Filters
-                </button>
-            )}
-
             <div className="space-y-6">
                 {/* Categories */}
                 <div className="border-b pb-4">
@@ -135,6 +125,15 @@ export const Filters = ({
                     )}
                 </div>
             </div>
+            {(filters.categories.length > 0 || filters.sizes.length > 0 || filters.colors.length > 0) && (
+                <button
+                    onClick={resetFilters}
+                    className="mt-4 flex items-center text-sm text-gray-600 hover:text-gray-900"
+                >
+                    <RotateCcw className="w-4 h-4 mr-1" />
+                    Reset Filters
+                </button>
+            )}
         </div>
     );
 };
